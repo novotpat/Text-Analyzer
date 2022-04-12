@@ -47,6 +47,7 @@ reg_users = {"bob": "123", "ann": "pass123", "mike": "password123", "liz": "pass
 # Entry username and password
 username_vstup = input("USERNAME: ")
 password_vstup = input("PASSWORD: ")
+
 # Verification of the registered user
 if username_vstup in reg_users.keys():
     print(separator)
@@ -67,55 +68,38 @@ else:
 text_number = input("Enter a number btw. 1 and 3 to select: ")
 print(separator)
 if text_number.isnumeric() and int(text_number) in range(1, 4):
-    text_index = int(text_number) - 1
-    text = TEXTS[text_index]
-elif text_number.isnumeric() and int(text_number) not in range(1, 4):
-    print("Incorrect number of the text!")
-    quit()
-else:
-    print("The input is not a number")
-    quit()
+    text_selection = TEXTS[int(text_number) - 1].split()
 
-# Text analysis
-if int(text_number) in range(1, 4):
-    text = TEXTS.copy()
-    text_selection = TEXTS.pop(text_index)
-
-# Number of words
+    # Number of words
     cleaned_words = []
-    for word in text_selection.split():
+    for word in text_selection:
         cleane_word = word.strip(",.:;'")
         cleaned_words.append(cleane_word)
         number_of_words = len(cleaned_words)
     print(f"There are {number_of_words} words in the selected text.")
 
-# Number of capitalised words
+    # Number of capitalised words, Number of uppercase words, Number of lowercase words, Number of figures
     big_letters = []
-    for letters in cleaned_words:
-        if letters.istitle():
-           big_letters.append(letters)
-    print(f"There are {len(big_letters)} titlecase words.")
-    #    velka_pismena = sum(map(str.istitle, text.split()))
-
-# Number of uppercase words
     upper_words = []
-    for words in cleaned_words:
-        if words.isupper() and not words.startswith("30N"):
-            upper_words.append(words)
-    print(f"There are {len(upper_words)} uppercase words.")
-
-# Number of lowercase words
     lower_words = []
-    for words in cleaned_words:
-        if words.islower():
-            lower_words.append(words)
-    print(f"There are {len(lower_words)} lowercase words.")
-
-# Number of figures
     summary_figures = []
-    for figures in cleaned_words:
-        if figures.isnumeric():
-            summary_figures.append(figures)
+    for words in cleaned_words:
+        if words.istitle():
+            big_letters.append(words)
+    #   velka_pismena = sum(map(str.istitle, text.split()))
+
+        elif words.isupper() and not words.startswith("30N"):
+            upper_words.append(words)
+
+        elif words.islower():
+            lower_words.append(words)
+
+        elif words.isnumeric():
+            summary_figures.append(words)
+
+    print(f"There are {len(big_letters)} titlecase words.")
+    print(f"There are {len(upper_words)} uppercase words.")
+    print(f"There are {len(lower_words)} lowercase words.")
     print(f"There are {len(summary_figures)} numeric strings.")
 
 # The sum of numbers
@@ -138,3 +122,9 @@ if int(text_number) in range(1, 4):
     for prvek in sor_keys:
         print(f"{prvek: >3}|{'*' * length_words.get(prvek):<17}|{length_words.get(prvek)}")
 
+elif text_number.isnumeric() and int(text_number) not in range(1, 4):
+    print("Incorrect number of the text!")
+    quit()
+else:
+    print("The input is not a number")
+    quit()
